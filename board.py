@@ -5,33 +5,33 @@ import pygame
 import constants
 import type
 from constants import COORD_WORLD_POS, LINE_WORLD_THICKNESS, LINE_COLOR, BOARD_BACKGROUND_COLOR, DOT_WORLD_RADIUS, DOT_BORDER_WORLD_THICKNESS, DOT_COLOR, DOT_BORDER_COLOR
-from type import Coord, Ring, Pos, Board, Player
+from type import Coordinate, Ring, Position, Board, Player
 
 _RING_MILLS = [
-    frozenset((Pos.P1, Pos.P2, Pos.P3)),
-    frozenset((Pos.P3, Pos.P4, Pos.P5)),
-    frozenset((Pos.P5, Pos.P6, Pos.P7)),
-    frozenset((Pos.P7, Pos.P8, Pos.P1)),
+    frozenset((Position.P1, Position.P2, Position.P3)),
+    frozenset((Position.P3, Position.P4, Position.P5)),
+    frozenset((Position.P5, Position.P6, Position.P7)),
+    frozenset((Position.P7, Position.P8, Position.P1)),
 ]
 
-_VERTICAL_MILL = frozenset((Pos.P2, Pos.P4, Pos.P6, Pos.P8))
+_VERTICAL_MILL = frozenset((Position.P2, Position.P4, Position.P6, Position.P8))
 
 
-def has_mill(board: Board, coord: Coord, player: Player) -> bool:
+def has_mill(board: Board, coord: Coordinate, player: Player) -> bool:
     assert board.get(coord, None) == player
 
     for ring_mill in _RING_MILLS:
-        if coord.pos not in ring_mill:
+        if coord.position not in ring_mill:
             continue
 
-        is_complete = all(board.get(Coord(coord.ring, pos), None) == player for pos in ring_mill)
+        is_complete = all(board.get(Coordinate(coord.ring, pos), None) == player for pos in ring_mill)
         if is_complete:
             return True
 
-    if coord.pos not in _VERTICAL_MILL:
+    if coord.position not in _VERTICAL_MILL:
         return False
 
-    is_complete = all(board.get(Coord(ring, coord.pos), None) == player for ring in Ring)
+    is_complete = all(board.get(Coordinate(ring, coord.position), None) == player for ring in Ring)
     if is_complete:
         return True
 
@@ -72,7 +72,7 @@ def draw_highlight(size: int, time: float) -> pygame.Surface:
 
 
 
-def draw_board_surface(board: type.Board, size: int) -> pygame.Surface:
+def draw_board_surface(board: type.GameBoard, size: int) -> pygame.Surface:
     surface = pygame.Surface((size, size))
     surface.fill(BOARD_BACKGROUND_COLOR)
 
@@ -81,11 +81,11 @@ def draw_board_surface(board: type.Board, size: int) -> pygame.Surface:
     outer_dot_radius = to_abs(DOT_WORLD_RADIUS + DOT_BORDER_WORLD_THICKNESS, size)
     inner_dot_radius = to_abs(DOT_WORLD_RADIUS, size)
 
-    absolute: dict[Coord, tuple[float, float]] = {}
+    absolute: dict[Coordinate, tuple[float, float]] = {}
 
     for ring in Ring:
-        for pos in Pos:
-            coord = Coord(ring, pos)
+        for pos in Position:
+            coord = Coordinate(ring, pos)
             absolute[coord] = to_abs(COORD_WORLD_POS[coord], size)
 
     edges: set[tuple[tuple[float, float], tuple[float, float]]] = set()
@@ -102,8 +102,8 @@ def draw_board_surface(board: type.Board, size: int) -> pygame.Surface:
         pygame.draw.line(surface, LINE_COLOR, coord_from, coord_to, width=line_thickness)
 
     for ring in Ring:
-        for pos in Pos:
-            coord = Coord(ring, pos)
+        for pos in Position:
+            coord = Coordinate(ring, pos)
             pygame.draw.circle(surface, DOT_BORDER_COLOR, absolute[coord], outer_dot_radius)
             pygame.draw.circle(surface, DOT_COLOR, absolute[coord], inner_dot_radius)
 
