@@ -28,6 +28,24 @@ def _build_piece_border_colors() -> dict[models.Player, models.Color]:
 PIECE_BORDER_COLORS: t.Final = _build_piece_border_colors()
 
 
+def _build_piece_hover_colors() -> dict[models.Player, models.Color]:
+    return {
+        models.Player.WHITE: colors.PIECE_HOVER_WHITE,
+        models.Player.BLACK: colors.PIECE_HOVER_BLACK,
+    }
+
+PIECE_HOVER_COLORS: t.Final = _build_piece_hover_colors()
+
+
+def _build_piece_hover_border_colors() -> dict[models.Player, models.Color]:
+    return {
+        models.Player.WHITE: colors.PIECE_HOVER_WHITE_BORDER,
+        models.Player.BLACK: colors.PIECE_HOVER_BLACK_BORDER,
+    }
+
+PIECE_HOVER_BORDER_COLORS: t.Final = _build_piece_hover_border_colors()
+
+
 def _build_ring_axis_values() -> dict[tuple[models.Ring, models.AxisLevel], float]:
     return {
         (models.Ring.OUTER, models.AxisLevel.LO): dimensions.OUTER_WORLD_LO,

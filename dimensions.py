@@ -21,6 +21,14 @@ DOT_BORDER_THICKNESS: t.Final[float] = 1 / 200
 PIECE_RADIUS: t.Final[float] = 2.5 / 75
 PIECE_BORDER_THICKNESS: t.Final[float] = 1 / 500
 
-HIGHLIGHT_BORDER_WIDTH: t.Final[float] = PIECE_RADIUS + 1 / 150
+PIECE_SHADOW_RADIUS: t.Final[float] = 2.625 / 75
+PIECE_SHADOW_HOVER_RADIUS: t.Final[float] = 3.5 / 75
+
+PIECE_HOVER_RADIUS: t.Final[float] = (2.5 / 75) * 1.25
+PIECE_HOVER_BORDER_THICKNESS: t.Final[float] = (1 / 500) * 1.25
+
+HIGHLIGHT_BORDER_WIDTH: t.Final[float] = 2*PIECE_RADIUS + 2/150
 HIGHLIGHT_BORDER_THICKNESS: t.Final[float] = 1 / 300
 HIGHLIGHT_BORDER_RADIUS: t.Final[float] = 1 / 75
+
+CURRENT_FONT_SIZE: t.Final[float] = 2.5 / 75

@@ -31,14 +31,18 @@ class Player(enum.Enum):
     WHITE = enum.auto()
     BLACK = enum.auto()
 
-    @classmethod
-    def switch(cls, player: t.Self) -> t.Self:
-        if player == cls.WHITE:
-            return cls.BLACK
-        elif player == cls.BLACK:
-            return cls.WHITE
+    def switch(self) -> t.Self:
+        if self == self.WHITE:
+            return self.BLACK
+        elif self == self.BLACK:
+            return self.WHITE
         else:
             assert False
+
+
+class MouseClick(enum.Enum):
+    UP = enum.auto()
+    DOWN = enum.auto()
 
 
 class AxisLevel(enum.Enum):
@@ -52,7 +56,15 @@ Color: t.TypeAlias = t.Tuple[int, int, int, int]
 LeftPieces: t.TypeAlias = t.Dict[Player, int]
 
 
-class GameState(metaclass=abc.ABCMeta):
+class GameState(enum.Enum):
+    PLACEMENT = enum.auto()
+    SELECT = enum.auto()
+    MOVEMENT = enum.auto()
+    REMOVE = enum.auto()
+    FLY = enum.auto()
+
+
+class Screen[T](metaclass=abc.ABCMeta):
     @abc.abstractmethod
-    def update(self, surface: pygame.Surface, events: t.Iterable[pygame.event.Event]) -> t.Self:
+    def update(self, surface: pygame.Surface, events: t.Iterable[pygame.event.Event]) -> T | None:
         pass

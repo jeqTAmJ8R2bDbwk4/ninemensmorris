@@ -1,22 +1,23 @@
 import typing as t
 
 import pygame
+import pygame.freetype
 
 import assets
 import models
-import states
+import screens
 
 FPS: t.Final[int] = 60
 
 
 def main() -> None:
     pygame.init()
+    pygame.freetype.init()
     running = True
     clock = pygame.time.Clock()
     surface = pygame.display.set_mode((640, 480), flags=pygame.RESIZABLE)
-    game_board = {models.Coordinate(ring, position): None for position in models.Position for ring in models.Ring}
-    left_pieces = {models.Player.WHITE: 3, models.Player.BLACK: 3}
-    state = states.PlacementGameState(models.Player.WHITE, game_board, left_pieces)
+    screen: models.Screen = screens.GameScreen()
+    assets.set_scale(min(surface.get_size()))
     while running:
         resizing = False
         events = pygame.event.get()
@@ -24,10 +25,14 @@ def main() -> None:
             if event.type == pygame.QUIT:
                 running = False
             if event.type == pygame.VIDEORESIZE:
+                assets.set_scale(min(surface.get_size()))
                 resizing = True
 
         surface.fill((0, 0, 0))
-        state = state.update(surface, events)
+        out = screen.update(surface, events)
+        if isinstance(screen, screens.GameScreen):
+            if out is not None:
+                screen = screens.EndScreen(out)
 
         if not resizing:
             clock.tick(FPS)
